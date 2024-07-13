@@ -5,8 +5,11 @@ from .git_utils import get_git_diff
 from .llm_utils import generate_commit_message
 from .config import config
 
-logging.basicConfig(level=logging.INFO, stream=sys.stderr)
+logging.basicConfig(level=logging.INFO, stream=sys.stderr, format='%(message)s')
 logger = logging.getLogger(__name__)
+
+# set httpx logging to WARNING to suppress INFO messages --> for claude api calls
+logging.getLogger("httpx").setLevel(logging.WARNING)
 
 
 @click.group()
@@ -16,7 +19,7 @@ def main():
 
 @main.command()
 @click.option('--model', default=None,
-              help="Name of the model to use (e.g., openai/gpt-3.5-turbo, gemini/gemini-pro, claude/claude-2.1, groq/llama3-8b, ollama/llama2)")
+              help="Name of the model to use (e.g., openai/gpt-3.5-turbo, gemini/gemini-pro, claude/claude-3-sonnet-20240320, groq/llama3-8b, ollama/llama2)")
 @click.option('--emoji/--no-emoji', default=None, help="Use emoji in commit message")
 @click.option('--repo-path', default='.', help="Path to the Git repository")
 @click.option('--include-description/--exclude-description', default=None, help="Include commit description")
@@ -27,6 +30,10 @@ def generate(model, emoji, repo_path, include_description, description_length, v
     """Generate a commit message based on the current git diff."""
     if verbose or debug:
         logging.getLogger().setLevel(logging.DEBUG)
+    else:
+        logging.getLogger().setLevel(logging.INFO)
+
+    logging.getLogger("httpx").setLevel(logging.WARNING)
 
     logger.debug("Starting commit message generation...")
 
@@ -59,7 +66,6 @@ def generate(model, emoji, repo_path, include_description, description_length, v
             description_length=desc_length,
             debug=debug
         )
-        logger.debug(f"Generated commit message: {commit_message}")
         click.echo(commit_message)
     except Exception as e:
         click.echo(f"Error generating commit message: {str(e)}", err=True)

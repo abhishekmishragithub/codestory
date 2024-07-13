@@ -19,7 +19,8 @@ class CommitType(str, Enum):
 class ConventionalCommit(BaseModel):
     type: CommitType
     scope: str = Field(default="", max_length=50)
-    description: str = Field(default="")
+    description: str = Field(..., max_length=100)
+    long_description: str = Field(default="", max_length=1000)
 
 
 EMOJI_MAP = {
@@ -42,9 +43,9 @@ def format_conventional_commit(commit: ConventionalCommit, use_emoji: bool = Fal
     emoji = EMOJI_MAP[commit.type.value] + " " if use_emoji else ""
     scope = f"({commit.scope})" if commit.scope else ""
 
-    if include_description and commit.description:
-        description = commit.description[:description_length] + "..." if len(
-            commit.description) > description_length else commit.description
-        return f"{emoji}{commit.type.value}{scope}: {description}"
-    else:
-        return f"{emoji}{commit.type.value}{scope}"
+    formatted_commit = f"{emoji}{commit.type.value}{scope}: {commit.description}"
+
+    if include_description and commit.long_description:
+        formatted_commit += f"\n\n{commit.long_description[:description_length]}"
+
+    return formatted_commit
