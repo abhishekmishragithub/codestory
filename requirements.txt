@@ -1,0 +1,11 @@
+click
+gitpython
+python-dotenv
+outlines
+pydantic
+transformers
+openai>=1.0.0
+google-generativeai
+anthropic
+groq
+requests
