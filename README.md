@@ -16,7 +16,7 @@ codestory generate
 
 ### Specifying a model
 ```bash
-codestory generate --model openai/gpt-3.5-turbo
+codestory generate --model gemini/gemini-1.5-flash
 ```
 
 ### Including a detailed description
@@ -28,3 +28,7 @@ codestory generate --include-description
 ```bash
 codestory generate --emoji
 ```
+
+## The Architecture/Workflow
+
+![FlowChart 2024-07-13](https://github.com/user-attachments/assets/075c11e8-2f96-41bb-a93a-d2a6f812fe0c)
