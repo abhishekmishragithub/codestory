@@ -68,18 +68,12 @@ Identifying Changes:
 
 For Model Usage/Fine-Tuning:
 
-- An off-the-shelf model like CLIP could generate initial commit messages
 - But fine-tuning on a dataset of code changes and messages may improve results
 - Collect examples as users provide feedback, then periodically re-train the model
-- Fine-tuning helps the model better understand your project's code and conventions
+
 
 Resources to train the model :
 
 - <https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716>
 - <https://www.conventionalcommits.org/en/v1.0.0/#specification>
 - <https://hackwild.com/article/semantic-git-commits/>
-
-
-<!-- ## Notes for current Hackathon
-
-- Need to use gemini api and other GCP ai services if needed. -->
